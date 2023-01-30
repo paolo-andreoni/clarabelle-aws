@@ -13,30 +13,26 @@ ARG group=ansible
 ARG work_path=ansible
 
 RUN apt -y update && \
-  apt -y install sudo && \
+  apt -y install build-essential \
+                 libbz2-dev \
+                 libncurses-dev \
+                 libffi-dev \
+                 libreadline-dev && \
   useradd ${user} && \
   usermod -g sudo ${user};
-
-
-#USER ${user}:${group}
+# libopenssl-dev  libsqlite-dev ;
 
 WORKDIR /${work_path}
 COPY ./ /${work_path}/
-
-RUN sudo apt -y install build-essential;
-#    apt -y install bzip2-devel \
-#                   ncurses-devel \
-#                   libffi-devel \
-#                   readline-devel \
-#                   openssl-libs \
-#                   sqlite-devel ;
 
 ## Install Ansible python packeges
 RUN pip install -U -r requirements.txt;
 ## Install collection
 RUN ansible-galaxy collection install amazon.aws
+RUN ansible-galaxy init aws;
+#RUN cp ansible/playbook.yml aws/task/main.yaml
 
-
+#USER ${user}:${group}
 
 ## Define default command.
 ##CMD ["bash"]
