@@ -7,7 +7,7 @@
     image_id: "{{ aws_ami_id }}"
     state: present
     wait: yes
-    wait_timeout: 300
+    wait_timeout: 500
     region: "{{ aws_region }}"
     tags:
        Name: "{{ item.value.name }}"
